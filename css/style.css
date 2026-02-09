@@ -5,8 +5,8 @@
 }
 
 body {
-    font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
-    background: #f0f4ff;
+    font-family: 'Jua', 'Segoe UI', 'Malgun Gothic', sans-serif;
+    background: #D6F0FF;
     color: #333;
     min-height: 100vh;
     display: flex;
@@ -28,13 +28,13 @@ body {
 
 h1 {
     font-size: 2.2rem;
-    color: #4a6cf7;
+    color: #3498DB;
     margin-bottom: 32px;
 }
 
 h2 {
     font-size: 1.8rem;
-    color: #4a6cf7;
+    color: #3498DB;
     margin-bottom: 24px;
 }
 
@@ -58,38 +58,38 @@ h2 {
 
 /* 연산 선택 버튼 */
 .btn-op {
-    background: #4a6cf7;
+    background: #5BC5F2;
     color: #fff;
-    box-shadow: 0 4px 12px rgba(74, 108, 247, 0.3);
+    box-shadow: 0 4px 12px rgba(91, 197, 242, 0.3);
 }
 
 .btn-op:hover {
-    background: #3b5de7;
+    background: #42B4E6;
 }
 
 /* 점수 이력 버튼 */
 .btn-history {
-    background: #ff9f43;
+    background: #FDCB6E;
     color: #fff;
     margin-top: 24px;
-    box-shadow: 0 4px 12px rgba(255, 159, 67, 0.3);
+    box-shadow: 0 4px 12px rgba(253, 203, 110, 0.3);
 }
 
 .btn-history:hover {
-    background: #e88e30;
+    background: #F0BD50;
 }
 
 /* 뒤로가기/홈 버튼 */
 .btn-back,
 .btn-home {
-    background: #a0a0a0;
+    background: #A8D8EA;
     color: #fff;
     margin-top: 24px;
 }
 
 .btn-back:hover,
 .btn-home:hover {
-    background: #888;
+    background: #8EC8DC;
 }
 
 /* 난이도 그리드 */
@@ -104,7 +104,7 @@ h2 {
     padding: 14px 8px;
     font-size: 1.1rem;
     font-weight: 600;
-    background: #6c5ce7;
+    background: #6BCB77;
     color: #fff;
     border: none;
     border-radius: 10px;
@@ -113,7 +113,7 @@ h2 {
 }
 
 .btn-level:hover {
-    background: #5a4bd1;
+    background: #55B865;
 }
 
 .btn-level:active {
@@ -140,10 +140,18 @@ h2 {
 }
 
 .quiz-question {
-    font-size: 4.5rem;
+    font-size: 9rem;
     font-weight: 700;
     color: #2d3436;
     margin-bottom: 24px;
+}
+
+.quiz-question .q-num {
+    color: #2d3436;
+}
+
+.quiz-question .q-op {
+    color: #5BC5F2;
 }
 
 .quiz-input {
@@ -158,7 +166,7 @@ h2 {
 }
 
 .quiz-input:focus {
-    border-color: #4a6cf7;
+    border-color: #5BC5F2;
 }
 
 .quiz-nav {
@@ -168,14 +176,23 @@ h2 {
 
 .btn-nav {
     flex: 1;
-    background: #00b894;
+    background: #6BCB77;
     color: #fff;
     font-size: 1.2rem;
-    box-shadow: 0 4px 12px rgba(0, 184, 148, 0.3);
+    box-shadow: 0 4px 12px rgba(107, 203, 119, 0.3);
 }
 
 .btn-nav:hover {
-    background: #00a381;
+    background: #55B865;
+}
+
+#btn-prev {
+    background: #85E091;
+    box-shadow: 0 4px 12px rgba(133, 224, 145, 0.3);
+}
+
+#btn-prev:hover {
+    background: #6BCB77;
 }
 
 .btn-nav:disabled {
@@ -188,7 +205,7 @@ h2 {
 .result-score {
     font-size: 3rem;
     font-weight: 700;
-    color: #e17055;
+    color: #F0932B;
     margin: 32px 0;
 }
 
@@ -206,11 +223,11 @@ h2 {
     background: #fff;
     border-radius: 8px;
     font-size: 0.9rem;
-    border-left: 4px solid #00b894;
+    border-left: 4px solid #6BCB77;
 }
 
 .review-item.wrong {
-    border-left-color: #e17055;
+    border-left-color: #E17055;
 }
 
 .review-item .rv-num {
@@ -234,7 +251,7 @@ h2 {
 }
 
 .review-item .rv-answer.correct {
-    color: #00b894;
+    color: #6BCB77;
 }
 
 .review-item .rv-answer.incorrect {
@@ -263,17 +280,17 @@ h2 {
 
 .history-item .hi-op {
     font-weight: 600;
-    color: #4a6cf7;
+    color: #5BC5F2;
     min-width: 60px;
 }
 
 .history-item .hi-level {
-    color: #6c5ce7;
+    color: #6BCB77;
 }
 
 .history-item .hi-score {
     font-weight: 700;
-    color: #e17055;
+    color: #F0932B;
 }
 
 .history-item .hi-date {
@@ -288,7 +305,22 @@ h2 {
     padding: 40px 0;
 }
 
-/* 반응형 */
+/* 반응형 - 태블릿 */
+@media (max-width: 768px) {
+    .screen {
+        max-width: 100%;
+        padding: 28px 20px;
+    }
+    .quiz-question {
+        font-size: 7rem;
+    }
+    .quiz-input {
+        width: 180px;
+        font-size: 1.6rem;
+    }
+}
+
+/* 반응형 - 모바일 */
 @media (max-width: 500px) {
     .screen {
         padding: 24px 16px;
@@ -297,10 +329,29 @@ h2 {
         font-size: 1.8rem;
     }
     .quiz-question {
-        font-size: 3.2rem;
+        font-size: 5rem;
+        word-break: keep-all;
     }
     .quiz-input {
         width: 160px;
         font-size: 1.5rem;
+    }
+    .btn {
+        padding: 14px 20px;
+        font-size: 1.2rem;
+    }
+    .btn-level {
+        padding: 12px 6px;
+        font-size: 1rem;
+    }
+    .result-review {
+        grid-template-columns: 1fr;
+    }
+    .review-item {
+        font-size: 0.85rem;
+    }
+    .history-item {
+        padding: 10px 12px;
+        font-size: 0.9rem;
     }
 }

@@ -133,7 +133,12 @@
     function showQuizQuestion() {
         var p = problems[currentIndex];
         document.getElementById('quiz-progress').textContent = (currentIndex + 1) + ' / 20';
-        document.getElementById('quiz-question').textContent = p.a + ' ' + p.op + ' ' + p.b + ' = ?';
+        document.getElementById('quiz-question').innerHTML =
+            '<span class="q-num">' + p.a + '</span>' +
+            ' <span class="q-op">' + p.op + '</span> ' +
+            '<span class="q-num">' + p.b + '</span>' +
+            ' <span class="q-op">=</span> ' +
+            '<span class="q-op">?</span>';
 
         var input = document.getElementById('quiz-answer');
         input.value = answers[currentIndex];
