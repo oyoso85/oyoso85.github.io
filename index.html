@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Block</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 홈 화면: 사칙연산 선택 -->
+    <section id="screen-home" class="screen active">
+        <h1>Number Block</h1>
+        <div class="menu-buttons">
+            <button class="btn btn-op" data-op="add">더하기 (+)</button>
+            <button class="btn btn-op" data-op="sub">빼기 (−)</button>
+            <button class="btn btn-op" data-op="mul">곱하기 (×)</button>
+            <button class="btn btn-op" data-op="div">나누기 (÷)</button>
+        </div>
+        <button class="btn btn-history" id="btn-show-history">점수 이력</button>
+    </section>
+
+    <!-- 난이도 선택 화면 -->
+    <section id="screen-level" class="screen">
+        <h2 id="level-title">난이도 선택</h2>
+        <div id="level-buttons" class="level-grid"></div>
+        <button class="btn btn-back" id="btn-level-back">뒤로가기</button>
+    </section>
+
+    <!-- 문제 풀이 화면 -->
+    <section id="screen-quiz" class="screen">
+        <div class="quiz-header">
+            <span id="quiz-progress">1 / 20</span>
+        </div>
+        <div class="quiz-body">
+            <div class="quiz-question" id="quiz-question">0 + 0 = ?</div>
+            <input type="number" id="quiz-answer" class="quiz-input" placeholder="답을 입력하세요" autocomplete="off">
+        </div>
+        <div class="quiz-nav">
+            <button class="btn btn-nav" id="btn-prev">이전</button>
+            <button class="btn btn-nav" id="btn-next">다음</button>
+        </div>
+        <button class="btn btn-home" id="btn-quiz-home">홈으로</button>
+    </section>
+
+    <!-- 채점 결과 화면 -->
+    <section id="screen-result" class="screen">
+        <h2>결과</h2>
+        <div class="result-score" id="result-score">0 / 20</div>
+        <div id="result-review" class="result-review"></div>
+        <button class="btn btn-home" id="btn-result-home">홈으로</button>
+    </section>
+
+    <!-- 점수 이력 화면 -->
+    <section id="screen-history" class="screen">
+        <h2>점수 이력</h2>
+        <div id="history-list" class="history-list"></div>
+        <button class="btn btn-home" id="btn-history-home">홈으로</button>
+    </section>
+
+    <script src="js/problems.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

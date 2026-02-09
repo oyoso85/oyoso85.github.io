@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(openspec new change:*)",
+      "Bash(openspec status:*)",
+      "Bash(openspec instructions proposal:*)",
+      "Bash(dir:*)",
+      "Bash(openspec instructions design:*)",
+      "Bash(openspec instructions specs:*)",
+      "Bash(openspec instructions tasks:*)",
+      "Bash(openspec instructions apply:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}
