@@ -1,5 +1,7 @@
 // 앱 진입점
 (function() {
+    // 첫 클릭 시 AudioContext 활성화
+    document.addEventListener('click', function() { Sound.unlock(); }, { once: true });
     // 상태
     var currentOperation = null;
     var currentLevel = null;
@@ -78,6 +80,7 @@
     var opButtons = document.querySelectorAll('.btn-op');
     for (var i = 0; i < opButtons.length; i++) {
         opButtons[i].addEventListener('click', function() {
+            Sound.click();
             currentOperation = this.getAttribute('data-op');
             showLevelScreen();
         });
@@ -103,6 +106,7 @@
             btn.innerHTML = '레벨 ' + lv + '<span class="level-desc">' + descriptions[lv - 1] + '</span>';
             btn.setAttribute('data-level', lv);
             btn.addEventListener('click', function() {
+                Sound.click();
                 currentLevel = parseInt(this.getAttribute('data-level'));
                 startQuiz();
             });
@@ -127,6 +131,7 @@
         currentIndex = 0;
         showQuizQuestion();
         showScreen('screen-quiz');
+        Sound.startBGM();
     }
 
     // 문제 표시
@@ -169,6 +174,15 @@
     // 다음/완료 버튼
     document.getElementById('btn-next').addEventListener('click', function() {
         saveCurrentAnswer();
+        // 답을 입력했으면 정답/오답 효과음
+        var userAns = answers[currentIndex].trim();
+        if (userAns !== '') {
+            if (parseInt(userAns) === problems[currentIndex].answer) {
+                Sound.correct();
+            } else {
+                Sound.wrong();
+            }
+        }
         if (currentIndex < 19) {
             currentIndex++;
             showQuizQuestion();
@@ -186,6 +200,8 @@
 
     // 퀴즈 → 홈
     document.getElementById('btn-quiz-home').addEventListener('click', function() {
+        Sound.stopBGM();
+        Sound.click();
         showScreen('screen-home');
     });
 
@@ -226,6 +242,8 @@
         // 점수 저장
         saveScore(currentOperation, currentLevel, correct, 20);
 
+        Sound.stopBGM();
+        Sound.fanfare();
         showScreen('screen-result');
     }
 
@@ -270,6 +288,13 @@
     // 이력 → 홈
     document.getElementById('btn-history-home').addEventListener('click', function() {
         showScreen('screen-home');
+    });
+
+    // 음소거 버튼
+    document.getElementById('btn-mute').addEventListener('click', function() {
+        var isMuted = Sound.toggleMute();
+        this.textContent = isMuted ? '🔇' : '🔊';
+        this.title = isMuted ? '소리 켜기' : '소리 끄기';
     });
 
     // 초기 화면

@@ -305,6 +305,31 @@ h2 {
     padding: 40px 0;
 }
 
+/* 음소거 버튼 */
+.btn-mute {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    width: 44px;
+    height: 44px;
+    font-size: 1.4rem;
+    background: rgba(255, 255, 255, 0.85);
+    border: 2px solid #ddd;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s;
+    line-height: 1;
+    padding: 0;
+}
+
+.btn-mute:active {
+    transform: scale(0.9);
+}
+
 /* 광고 컨테이너 */
 .ad-container {
     margin-top: 24px;
