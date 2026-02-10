@@ -16,6 +16,25 @@
         div: '나누기'
     };
 
+    var OP_SYMBOL_TO_KOREAN = {
+        '+': '더하기',
+        '−': '빼기',
+        '×': '곱하기',
+        '÷': '나누기'
+    };
+
+    // TTS: 문제를 한국어로 읽어주기
+    function speakQuestion(a, op, b) {
+        if (typeof speechSynthesis === 'undefined') return;
+        if (Sound.isMuted()) return;
+        speechSynthesis.cancel();
+        var opKor = OP_SYMBOL_TO_KOREAN[op] || op;
+        var text = a + ' ' + opKor + ' ' + b + ' 은?';
+        var utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'ko-KR';
+        speechSynthesis.speak(utter);
+    }
+
     var LEVEL_DESCRIPTIONS = {
         add: [
             '한자리 + 한자리',
@@ -144,6 +163,8 @@
             '<span class="q-num">' + p.b + '</span>' +
             ' <span class="q-op">=</span> ' +
             '<span class="q-op">?</span>';
+
+        speakQuestion(p.a, p.op, p.b);
 
         var input = document.getElementById('quiz-answer');
         input.value = answers[currentIndex];
