@@ -114,7 +114,7 @@ var Sound = (function() {
             for (var i = 0; i < melody.length; i++) {
                 var freq = melody[i][0];
                 var dur = melody[i][1] * beatLen;
-                playTone(freq, dur * 0.85, 'square', 0.06, t + offset);
+                playTone(freq, dur * 0.85, 'square', 0.02, t + offset);
                 offset += dur;
             }
 
@@ -123,7 +123,7 @@ var Sound = (function() {
             for (var i = 0; i < bass.length; i++) {
                 var freq = bass[i][0];
                 var dur = bass[i][1] * beatLen;
-                playTone(freq, dur * 0.7, 'triangle', 0.08, t + offset);
+                playTone(freq, dur * 0.7, 'triangle', 0.03, t + offset);
                 offset += dur;
             }
         }

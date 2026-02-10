@@ -29,9 +29,12 @@
         if (Sound.isMuted()) return;
         speechSynthesis.cancel();
         var opKor = OP_SYMBOL_TO_KOREAN[op] || op;
-        var text = a + ' ' + opKor + ' ' + b + ' 은?';
+        var lastDigit = Math.abs(b) % 10;
+        var particle = (lastDigit === 2 || lastDigit === 4 || lastDigit === 5 || lastDigit === 9) ? '는?' : '은?';
+        var text = a + ' ' + opKor + ' ' + b + ' ' + particle;
         var utter = new SpeechSynthesisUtterance(text);
         utter.lang = 'ko-KR';
+        utter.rate = 0.8;
         speechSynthesis.speak(utter);
     }
 
