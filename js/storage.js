@@ -26,3 +26,24 @@ function saveScore(operation, level, score, total) {
     }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(scores));
 }
+
+// 사운드 설정 저장
+var SOUND_SETTING_KEY = 'numberblock_soundEnabled';
+
+function saveSoundSetting(enabled) {
+    try {
+        localStorage.setItem(SOUND_SETTING_KEY, JSON.stringify(enabled));
+    } catch (e) {
+        console.warn('localStorage 저장 실패:', e);
+    }
+}
+
+function getSoundSetting() {
+    try {
+        var data = localStorage.getItem(SOUND_SETTING_KEY);
+        return data !== null ? JSON.parse(data) : true; // 기본값: 소리 켜짐
+    } catch (e) {
+        console.warn('localStorage 읽기 실패:', e);
+        return true; // 기본값: 소리 켜짐
+    }
+}

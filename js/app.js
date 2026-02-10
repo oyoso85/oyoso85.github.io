@@ -34,7 +34,7 @@
         var text = a + ' ' + opKor + ' ' + b + ' ' + particle;
         var utter = new SpeechSynthesisUtterance(text);
         utter.lang = 'ko-KR';
-        utter.rate = 0.8;
+        utter.rate = 0.72; // 기존 0.8에서 10% 느리게 (0.8 * 0.9 = 0.72)
         speechSynthesis.speak(utter);
     }
 
@@ -196,20 +196,21 @@
     });
 
     // 다음/완료 버튼
-    document.getElementById('btn-next').addEventListener('click', function() {
+    document.getElementById('btn-next').addEventListener('click', async function() {
         saveCurrentAnswer();
         // 답을 입력했으면 정답/오답 효과음
         var userAns = answers[currentIndex].trim();
         if (userAns !== '') {
             if (parseInt(userAns) === problems[currentIndex].answer) {
-                Sound.correct();
+                await Sound.correct(); // 효과음 완료 대기
             } else {
-                Sound.wrong();
+                await Sound.wrong(); // 효과음 완료 대기
             }
         }
+        // 효과음 완료 후 문제 전환
         if (currentIndex < 19) {
             currentIndex++;
-            showQuizQuestion();
+            showQuizQuestion(); // 문제 전환 후 TTS 자동 재생
         } else {
             finishQuiz();
         }
@@ -323,11 +324,17 @@
     });
 
     // 음소거 버튼
-    document.getElementById('btn-mute').addEventListener('click', function() {
+    var btnMute = document.getElementById('btn-mute');
+    btnMute.addEventListener('click', function() {
         var isMuted = Sound.toggleMute();
         this.textContent = isMuted ? '🔇' : '🔊';
         this.title = isMuted ? '소리 켜기' : '소리 끄기';
     });
+
+    // 음소거 버튼 초기 상태 설정 (localStorage에서 복원)
+    var initialMuted = Sound.isMuted();
+    btnMute.textContent = initialMuted ? '🔇' : '🔊';
+    btnMute.title = initialMuted ? '소리 켜기' : '소리 끄기';
 
     // 초기 화면
     showScreen('screen-home');

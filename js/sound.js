@@ -5,6 +5,15 @@ var Sound = (function() {
     var bgmInterval = null;
     var bgmGain = null;
 
+    // localStorage에서 초기 설정 읽기
+    function initSettings() {
+        if (typeof getSoundSetting === 'function') {
+            var savedEnabled = getSoundSetting();
+            muted = !savedEnabled; // localStorage는 enabled 상태, muted는 반대
+        }
+    }
+    initSettings();
+
     function getCtx() {
         if (!ctx) {
             ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -32,22 +41,72 @@ var Sound = (function() {
 
     // 효과음: 정답
     function correct() {
-        if (muted) return;
-        var c = getCtx();
-        var t = c.currentTime;
-        playTone(523.25, 0.1, 'square', 0.15, t);        // C5
-        playTone(659.25, 0.1, 'square', 0.15, t + 0.1);  // E5
-        playTone(783.99, 0.15, 'square', 0.15, t + 0.2);  // G5
-        playTone(1046.50, 0.25, 'square', 0.12, t + 0.3); // C6
+        return new Promise(function(resolve) {
+            if (muted) {
+                resolve();
+                return;
+            }
+            var c = getCtx();
+            var t = c.currentTime;
+            playTone(523.25, 0.1, 'square', 0.15, t);        // C5
+            playTone(659.25, 0.1, 'square', 0.15, t + 0.1);  // E5
+            playTone(783.99, 0.15, 'square', 0.15, t + 0.2);  // G5
+            playTone(1046.50, 0.25, 'square', 0.12, t + 0.3); // C6
+
+            // 효과음 재생 시간: 0.1 + 0.1 + 0.15 + 0.25 = 0.6초
+            var duration = 600; // 밀리초
+            var timeout = 3000; // 3초 timeout
+
+            var completed = false;
+            setTimeout(function() {
+                if (!completed) {
+                    completed = true;
+                    resolve();
+                }
+            }, duration);
+
+            // timeout 안전장치
+            setTimeout(function() {
+                if (!completed) {
+                    completed = true;
+                    resolve();
+                }
+            }, timeout);
+        });
     }
 
     // 효과음: 오답
     function wrong() {
-        if (muted) return;
-        var c = getCtx();
-        var t = c.currentTime;
-        playTone(311.13, 0.15, 'square', 0.12, t);        // Eb4
-        playTone(233.08, 0.3, 'square', 0.12, t + 0.15);  // Bb3
+        return new Promise(function(resolve) {
+            if (muted) {
+                resolve();
+                return;
+            }
+            var c = getCtx();
+            var t = c.currentTime;
+            playTone(311.13, 0.15, 'square', 0.12, t);        // Eb4
+            playTone(233.08, 0.3, 'square', 0.12, t + 0.15);  // Bb3
+
+            // 효과음 재생 시간: 0.15 + 0.3 = 0.45초
+            var duration = 450; // 밀리초
+            var timeout = 3000; // 3초 timeout
+
+            var completed = false;
+            setTimeout(function() {
+                if (!completed) {
+                    completed = true;
+                    resolve();
+                }
+            }, duration);
+
+            // timeout 안전장치
+            setTimeout(function() {
+                if (!completed) {
+                    completed = true;
+                    resolve();
+                }
+            }, timeout);
+        });
     }
 
     // 효과음: 버튼 클릭
@@ -151,6 +210,10 @@ var Sound = (function() {
         muted = !muted;
         if (muted) {
             stopBGM();
+        }
+        // localStorage에 저장
+        if (typeof saveSoundSetting === 'function') {
+            saveSoundSetting(!muted); // muted의 반대값 저장 (enabled 상태)
         }
         return muted;
     }
