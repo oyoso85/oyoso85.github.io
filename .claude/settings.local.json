@@ -22,7 +22,16 @@
       "Bash(gh api:*)",
       "Bash(git push:*)",
       "Bash(gh repo rename:*)",
-      "Bash(git remote set-url:*)"
+      "Bash(git remote set-url:*)",
+      "Bash(git -C \"c:\\\\office\\\\git\\\\study\\\\number-block\" status)",
+      "Bash(git -C \"c:\\\\office\\\\git\\\\study\\\\number-block\" diff)",
+      "Bash(git -C \"c:\\\\office\\\\git\\\\study\\\\number-block\" log --oneline -5)",
+      "Bash(git -C \"c:\\\\office\\\\git\\\\study\\\\number-block\" add js/sound.js css/style.css index.html js/app.js)",
+      "Bash(git -C \"c:\\\\office\\\\git\\\\study\\\\number-block\" commit -m \"$\\(cat <<''EOF''\nfeat: Web Audio API 기반 8비트 사운드 효과음 및 BGM 추가\n\n- 정답/오답/버튼클릭/퀴즈완료 효과음 추가\n- 퀴즈 풀이 중 8비트 루프 BGM 재생\n- 음소거 토글 버튼 추가 \\(우측 상단 고정\\)\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git -C \"c:\\\\office\\\\git\\\\study\\\\number-block\" push)",
+      "Bash(git -C \"c:\\\\office\\\\git\\\\study\\\\number-block\" pull --rebase)",
+      "Bash(git -C:*)",
+      "Bash(openspec list:*)"
     ]
   }
 }

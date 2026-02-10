@@ -43,7 +43,7 @@ h2 {
     display: block;
     width: 100%;
     padding: 16px 24px;
-    margin: 10px 0;
+    margin: 6px 0;
     font-size: 1.4rem;
     font-weight: 600;
     border: none;
@@ -132,18 +132,18 @@ h2 {
 .quiz-header {
     font-size: 1.2rem;
     color: #666;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
 }
 
 .quiz-body {
-    margin-bottom: 32px;
+    margin-bottom: 12px;
 }
 
 .quiz-question {
-    font-size: 9rem;
+    font-size: 8rem;
     font-weight: 700;
     color: #2d3436;
-    margin-bottom: 24px;
+    margin-bottom: 12px;
 }
 
 .quiz-question .q-num {
@@ -155,7 +155,7 @@ h2 {
 }
 
 .quiz-input {
-    width: 200px;
+    width: 100%;
     padding: 14px;
     font-size: 1.8rem;
     text-align: center;
@@ -347,7 +347,7 @@ h2 {
         font-size: 7rem;
     }
     .quiz-input {
-        width: 180px;
+        width: 100%;
         font-size: 1.6rem;
     }
 }
@@ -365,7 +365,7 @@ h2 {
         word-break: keep-all;
     }
     .quiz-input {
-        width: 160px;
+        width: 100%;
         font-size: 1.5rem;
     }
     .btn {

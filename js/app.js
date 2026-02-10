@@ -198,6 +198,14 @@
         }
     });
 
+    // 모바일 가상 키보드 대응: 입력 필드 포커스 시 문제 영역 스크롤
+    document.getElementById('quiz-answer').addEventListener('focus', function() {
+        var question = document.getElementById('quiz-question');
+        setTimeout(function() {
+            question.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 300);
+    });
+
     // 퀴즈 → 홈
     document.getElementById('btn-quiz-home').addEventListener('click', function() {
         Sound.stopBGM();
