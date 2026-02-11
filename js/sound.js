@@ -4,6 +4,7 @@ var Sound = (function() {
     var muted = false;
     var bgmInterval = null;
     var bgmGain = null;
+    var masterGain = null;
 
     // localStorage에서 초기 설정 읽기
     function initSettings() {
@@ -17,8 +18,18 @@ var Sound = (function() {
     function getCtx() {
         if (!ctx) {
             ctx = new (window.AudioContext || window.webkitAudioContext)();
+            masterGain = ctx.createGain();
+            masterGain.connect(ctx.destination);
+            if (muted) {
+                masterGain.gain.setValueAtTime(0, ctx.currentTime);
+            }
         }
         return ctx;
+    }
+
+    function getMasterGain() {
+        getCtx();
+        return masterGain;
     }
 
     // 기본 8비트 음 재생
@@ -34,7 +45,7 @@ var Sound = (function() {
         gain.gain.exponentialRampToValueAtTime(0.001, (startTime || c.currentTime) + duration);
 
         osc.connect(gain);
-        gain.connect(c.destination);
+        gain.connect(getMasterGain());
         osc.start(startTime || c.currentTime);
         osc.stop((startTime || c.currentTime) + duration);
     }
@@ -208,6 +219,9 @@ var Sound = (function() {
     // 음소거 토글
     function toggleMute() {
         muted = !muted;
+        if (masterGain) {
+            masterGain.gain.setValueAtTime(muted ? 0 : 1, ctx.currentTime);
+        }
         if (muted) {
             stopBGM();
         }

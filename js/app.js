@@ -24,6 +24,21 @@
     };
 
     // TTS: 문제를 한국어로 읽어주기
+    var koVoice = null;
+    function findKoreanVoice() {
+        var voices = speechSynthesis.getVoices();
+        for (var i = 0; i < voices.length; i++) {
+            if (voices[i].lang.indexOf('ko') === 0) {
+                koVoice = voices[i];
+                return;
+            }
+        }
+    }
+    if (typeof speechSynthesis !== 'undefined') {
+        findKoreanVoice();
+        speechSynthesis.addEventListener('voiceschanged', findKoreanVoice);
+    }
+
     function speakQuestion(a, op, b) {
         if (typeof speechSynthesis === 'undefined') return;
         if (Sound.isMuted()) return;
@@ -34,7 +49,10 @@
         var text = a + ' ' + opKor + ' ' + b + ' ' + particle;
         var utter = new SpeechSynthesisUtterance(text);
         utter.lang = 'ko-KR';
-        utter.rate = 0.72; // 기존 0.8에서 10% 느리게 (0.8 * 0.9 = 0.72)
+        if (koVoice) {
+            utter.voice = koVoice;
+        }
+        utter.rate = 0.72;
         speechSynthesis.speak(utter);
     }
 
