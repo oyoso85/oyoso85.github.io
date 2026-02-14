@@ -360,6 +360,10 @@ h2 {
 }
 
 /* 계산기 화면 */
+#screen-calculator {
+    position: relative;
+}
+
 .calc-display {
     background: #fff;
     border-radius: 16px;
@@ -446,14 +450,14 @@ h2 {
     box-shadow: 0 2px 8px rgba(52, 152, 219, 0.5);
 }
 
-.calc-eq {
-    background: #6BCB77;
+.calc-del {
+    background: #FDCB6E;
     color: #fff;
-    box-shadow: 0 2px 6px rgba(107, 203, 119, 0.3);
+    box-shadow: 0 2px 6px rgba(253, 203, 110, 0.3);
 }
 
-.calc-eq:hover {
-    background: #55B865;
+.calc-del:hover {
+    background: #F0BD50;
 }
 
 .calc-clear {
@@ -464,6 +468,42 @@ h2 {
 
 .calc-clear:hover {
     background: #D35F44;
+}
+
+/* 계산기 홈으로 버튼 (왼쪽 상단) */
+.btn-calc-back {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: #A8D8EA;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Jua', sans-serif;
+    transition: transform 0.1s;
+}
+
+.btn-calc-back:hover {
+    background: #8EC8DC;
+}
+
+.btn-calc-back:active {
+    transform: scale(0.93);
+}
+
+/* 계산하기 버튼 */
+.btn-calc-eq {
+    background: #6BCB77;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(107, 203, 119, 0.3);
+}
+
+.btn-calc-eq:hover {
+    background: #55B865;
 }
 
 /* 광고 컨테이너 */

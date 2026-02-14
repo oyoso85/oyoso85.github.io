@@ -394,10 +394,16 @@
         showScreen('screen-calculator');
     });
 
-    // 계산기 홈으로
-    document.getElementById('btn-calc-home').addEventListener('click', function() {
+    // 계산기 홈으로 (왼쪽 상단 버튼)
+    document.getElementById('btn-calc-back').addEventListener('click', function() {
         Sound.click();
         showScreen('screen-home');
+    });
+
+    // 계산하기 (= 버튼 역할)
+    document.getElementById('btn-calc-eq').addEventListener('click', function() {
+        Sound.click();
+        calcCalculate();
     });
 
     function calcReset() {
@@ -451,12 +457,30 @@
                 calcInputNumber(val);
             } else if (val === '+' || val === '−' || val === '×' || val === '÷') {
                 calcInputOperator(val);
-            } else if (val === '=') {
-                calcCalculate();
+            } else if (val === 'DEL') {
+                calcDeleteLastDigit();
             } else if (val === 'C') {
                 calcReset();
             }
         });
+    }
+
+    function calcDeleteLastDigit() {
+        // 에러 상태면 리셋
+        if (calcDisplay === '0으로 나눌 수 없어요' || calcDisplay === '너무 커요!' || calcDisplay === '0보다 작아요!') {
+            calcReset();
+            return;
+        }
+        // 결과 표시 중이면 무시
+        if (calcJustCalculated) {
+            return;
+        }
+        if (calcDisplay.length > 1) {
+            calcDisplay = calcDisplay.slice(0, -1);
+        } else {
+            calcDisplay = '0';
+        }
+        calcUpdateDisplay();
     }
 
     function calcInputNumber(num) {
