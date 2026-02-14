@@ -59,6 +59,19 @@
         speechSynthesis.speak(utter);
     }
 
+    function speakText(text) {
+        if (typeof speechSynthesis === 'undefined') return;
+        if (Sound.isTtsMuted()) return;
+        speechSynthesis.cancel();
+        var utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'ko-KR';
+        if (koVoice) {
+            utter.voice = koVoice;
+        }
+        utter.rate = 0.72;
+        speechSynthesis.speak(utter);
+    }
+
     var LEVEL_DESCRIPTIONS = {
         add: [
             '한자리 + 한자리',
@@ -366,6 +379,251 @@
     var initialTtsMuted = Sound.isTtsMuted();
     btnTts.title = initialTtsMuted ? '음성 켜기' : '음성 끄기';
     btnTts.classList.toggle('off', initialTtsMuted);
+
+    // === 계산기 ===
+    var calcDisplay = '0';
+    var calcFirstOperand = null;
+    var calcOperator = null;
+    var calcWaitingForSecond = false;
+    var calcJustCalculated = false;
+
+    // 계산기 버튼 클릭 → 화면 전환
+    document.getElementById('btn-show-calculator').addEventListener('click', function() {
+        Sound.click();
+        calcReset();
+        showScreen('screen-calculator');
+    });
+
+    // 계산기 홈으로
+    document.getElementById('btn-calc-home').addEventListener('click', function() {
+        Sound.click();
+        showScreen('screen-home');
+    });
+
+    function calcReset() {
+        calcDisplay = '0';
+        calcFirstOperand = null;
+        calcOperator = null;
+        calcWaitingForSecond = false;
+        calcJustCalculated = false;
+        calcUpdateDisplay();
+        // 연산자 버튼 active 해제
+        var opBtns = document.querySelectorAll('.calc-op');
+        for (var i = 0; i < opBtns.length; i++) {
+            opBtns[i].classList.remove('active');
+        }
+    }
+
+    function calcUpdateDisplay() {
+        var valueEl = document.getElementById('calc-value');
+        var exprEl = document.getElementById('calc-expression');
+        var remEl = document.getElementById('calc-remainder');
+
+        valueEl.textContent = calcDisplay;
+        valueEl.classList.remove('error');
+        remEl.textContent = '';
+
+        // 에러 메시지 스타일
+        if (calcDisplay === '0으로 나눌 수 없어요' || calcDisplay === '너무 커요!' || calcDisplay === '0보다 작아요!') {
+            valueEl.classList.add('error');
+        }
+
+        // 식 표시
+        if (calcFirstOperand !== null && calcOperator !== null) {
+            if (calcJustCalculated) {
+                exprEl.textContent = calcFirstOperand + ' ' + calcOperator + ' ' + calcDisplay + ' =';
+            } else {
+                exprEl.textContent = calcFirstOperand + ' ' + calcOperator;
+            }
+        } else {
+            exprEl.textContent = '';
+        }
+    }
+
+    // 계산기 버튼 이벤트
+    var calcBtns = document.querySelectorAll('.calc-btn');
+    for (var i = 0; i < calcBtns.length; i++) {
+        calcBtns[i].addEventListener('click', function() {
+            var val = this.getAttribute('data-val');
+            Sound.click();
+
+            if (val >= '0' && val <= '9') {
+                calcInputNumber(val);
+            } else if (val === '+' || val === '−' || val === '×' || val === '÷') {
+                calcInputOperator(val);
+            } else if (val === '=') {
+                calcCalculate();
+            } else if (val === 'C') {
+                calcReset();
+            }
+        });
+    }
+
+    function calcInputNumber(num) {
+        // 에러 상태면 리셋
+        if (calcDisplay === '0으로 나눌 수 없어요' || calcDisplay === '너무 커요!' || calcDisplay === '0보다 작아요!') {
+            calcReset();
+        }
+
+        // 결과 표시 후 새 숫자 입력 시 전체 리셋
+        if (calcJustCalculated) {
+            calcReset();
+        }
+
+        if (calcWaitingForSecond) {
+            calcDisplay = num;
+            calcWaitingForSecond = false;
+        } else {
+            if (calcDisplay === '0') {
+                calcDisplay = num;
+            } else if (calcDisplay.length < 7) {
+                calcDisplay = calcDisplay + num;
+            }
+        }
+        calcUpdateDisplay();
+    }
+
+    function calcInputOperator(op) {
+        // 에러 상태면 무시
+        if (calcDisplay === '0으로 나눌 수 없어요' || calcDisplay === '너무 커요!' || calcDisplay === '0보다 작아요!') {
+            return;
+        }
+
+        // 결과 후 연산자 → 결과를 첫 번째 피연산자로
+        if (calcJustCalculated) {
+            calcFirstOperand = parseInt(calcDisplay);
+            calcOperator = op;
+            calcWaitingForSecond = true;
+            calcJustCalculated = false;
+            calcHighlightOp(op);
+            calcUpdateDisplay();
+            return;
+        }
+
+        var inputValue = parseInt(calcDisplay);
+
+        if (calcFirstOperand === null) {
+            calcFirstOperand = inputValue;
+        } else if (!calcWaitingForSecond) {
+            // 이미 연산자가 있고 두 번째 수 입력 후 새 연산자 → 먼저 계산
+            // 여기서는 단순히 연산자 교체만
+        }
+
+        calcOperator = op;
+        calcWaitingForSecond = true;
+        calcHighlightOp(op);
+        calcUpdateDisplay();
+    }
+
+    function calcHighlightOp(op) {
+        var opBtns = document.querySelectorAll('.calc-op');
+        for (var i = 0; i < opBtns.length; i++) {
+            if (opBtns[i].getAttribute('data-val') === op) {
+                opBtns[i].classList.add('active');
+            } else {
+                opBtns[i].classList.remove('active');
+            }
+        }
+    }
+
+    function calcCalculate() {
+        if (calcFirstOperand === null || calcOperator === null) return;
+        // 에러 상태면 무시
+        if (calcDisplay === '0으로 나눌 수 없어요' || calcDisplay === '너무 커요!' || calcDisplay === '0보다 작아요!') {
+            return;
+        }
+
+        var second = parseInt(calcDisplay);
+        var result;
+        var remainder = null;
+        var exprFirst = calcFirstOperand;
+
+        if (calcOperator === '+') {
+            result = calcFirstOperand + second;
+        } else if (calcOperator === '−') {
+            result = calcFirstOperand - second;
+        } else if (calcOperator === '×') {
+            result = calcFirstOperand * second;
+        } else if (calcOperator === '÷') {
+            if (second === 0) {
+                calcDisplay = '0으로 나눌 수 없어요';
+                calcJustCalculated = true;
+                calcUpdateDisplay();
+                speakText('0으로 나눌 수 없어요');
+                Sound.correct();
+                // 연산자 active 해제
+                var opBtns = document.querySelectorAll('.calc-op');
+                for (var j = 0; j < opBtns.length; j++) {
+                    opBtns[j].classList.remove('active');
+                }
+                return;
+            }
+            result = Math.floor(calcFirstOperand / second);
+            var mod = calcFirstOperand % second;
+            if (mod !== 0) {
+                remainder = mod;
+            }
+        }
+
+        // 범위 체크
+        if (result > 9999999) {
+            calcDisplay = '너무 커요!';
+            calcJustCalculated = true;
+            calcUpdateDisplay();
+            document.getElementById('calc-expression').textContent = exprFirst + ' ' + calcOperator + ' ' + second + ' =';
+            speakText('너무 커요!');
+            Sound.correct();
+            var opBtns2 = document.querySelectorAll('.calc-op');
+            for (var k = 0; k < opBtns2.length; k++) {
+                opBtns2[k].classList.remove('active');
+            }
+            return;
+        }
+
+        if (result < 0) {
+            calcDisplay = '0보다 작아요!';
+            calcJustCalculated = true;
+            calcUpdateDisplay();
+            document.getElementById('calc-expression').textContent = exprFirst + ' ' + calcOperator + ' ' + second + ' =';
+            speakText('0보다 작아요!');
+            Sound.correct();
+            var opBtns3 = document.querySelectorAll('.calc-op');
+            for (var m = 0; m < opBtns3.length; m++) {
+                opBtns3[m].classList.remove('active');
+            }
+            return;
+        }
+
+        calcDisplay = String(result);
+        calcJustCalculated = true;
+
+        // 식 표시 업데이트
+        document.getElementById('calc-expression').textContent = exprFirst + ' ' + calcOperator + ' ' + second + ' =';
+        document.getElementById('calc-value').textContent = calcDisplay;
+        document.getElementById('calc-value').classList.remove('error');
+
+        // 나머지 표시
+        if (remainder !== null) {
+            document.getElementById('calc-remainder').textContent = '나머지 ' + remainder;
+        } else {
+            document.getElementById('calc-remainder').textContent = '';
+        }
+
+        // 연산자 active 해제
+        var opBtns4 = document.querySelectorAll('.calc-op');
+        for (var n = 0; n < opBtns4.length; n++) {
+            opBtns4[n].classList.remove('active');
+        }
+
+        // 결과 읽기
+        var ttsText = String(result);
+        if (remainder !== null) {
+            ttsText = result + ', 나머지 ' + remainder;
+        }
+        speakText(ttsText);
+
+        Sound.correct();
+    }
 
     // 초기 화면
     showScreen('screen-home');

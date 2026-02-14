@@ -347,6 +347,125 @@ h2 {
     opacity: 0.4;
 }
 
+/* 계산기 버튼 (홈 화면) */
+.btn-calculator {
+    background: #A29BFE;
+    color: #fff;
+    margin-top: 8px;
+    box-shadow: 0 4px 12px rgba(162, 155, 254, 0.3);
+}
+
+.btn-calculator:hover {
+    background: #8B82F0;
+}
+
+/* 계산기 화면 */
+.calc-display {
+    background: #fff;
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.calc-expression {
+    font-size: 1.2rem;
+    color: #999;
+    text-align: right;
+    min-height: 1.5em;
+}
+
+.calc-value {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: #2d3436;
+    text-align: right;
+    word-break: break-all;
+}
+
+.calc-value.error {
+    font-size: 1.6rem;
+    color: #E17055;
+}
+
+.calc-remainder {
+    font-size: 1rem;
+    color: #6BCB77;
+    text-align: right;
+    min-height: 1.3em;
+}
+
+.calc-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.calc-btn {
+    padding: 18px;
+    font-size: 1.6rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.1s;
+    font-family: 'Jua', sans-serif;
+}
+
+.calc-btn:active {
+    transform: scale(0.93);
+}
+
+.calc-num {
+    background: #fff;
+    color: #2d3436;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.calc-num:hover {
+    background: #f0f0f0;
+}
+
+.calc-op {
+    background: #5BC5F2;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(91, 197, 242, 0.3);
+}
+
+.calc-op:hover {
+    background: #42B4E6;
+}
+
+.calc-op.active {
+    background: #3498DB;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.5);
+}
+
+.calc-eq {
+    background: #6BCB77;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(107, 203, 119, 0.3);
+}
+
+.calc-eq:hover {
+    background: #55B865;
+}
+
+.calc-clear {
+    background: #E17055;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(225, 112, 85, 0.3);
+}
+
+.calc-clear:hover {
+    background: #D35F44;
+}
+
 /* 광고 컨테이너 */
 .ad-container {
     margin-top: 24px;
@@ -366,6 +485,13 @@ h2 {
     .quiz-input {
         width: 100%;
         font-size: 1.6rem;
+    }
+    .calc-value {
+        font-size: 3rem;
+    }
+    .calc-btn {
+        padding: 16px;
+        font-size: 1.4rem;
     }
 }
 
@@ -402,5 +528,18 @@ h2 {
     .history-item {
         padding: 10px 12px;
         font-size: 0.9rem;
+    }
+    .calc-value {
+        font-size: 2.5rem;
+    }
+    .calc-value.error {
+        font-size: 1.3rem;
+    }
+    .calc-btn {
+        padding: 14px;
+        font-size: 1.3rem;
+    }
+    .calc-grid {
+        gap: 6px;
     }
 }
