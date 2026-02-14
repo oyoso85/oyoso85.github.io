@@ -1,7 +1,10 @@
 // 앱 진입점
 (function() {
-    // 첫 클릭 시 AudioContext 활성화
-    document.addEventListener('click', function() { Sound.unlock(); }, { once: true });
+    // 첫 클릭 시 AudioContext 활성화 + BGM 시작
+    document.addEventListener('click', function() {
+        Sound.unlock();
+        Sound.startBGM();
+    }, { once: true });
     // 상태
     var currentOperation = null;
     var currentLevel = null;
@@ -41,7 +44,7 @@
 
     function speakQuestion(a, op, b) {
         if (typeof speechSynthesis === 'undefined') return;
-        if (Sound.isMuted()) return;
+        if (Sound.isTtsMuted()) return;
         speechSynthesis.cancel();
         var opKor = OP_SYMBOL_TO_KOREAN[op] || op;
         var lastDigit = Math.abs(b) % 10;
@@ -251,7 +254,6 @@
 
     // 퀴즈 → 홈
     document.getElementById('btn-quiz-home').addEventListener('click', function() {
-        Sound.stopBGM();
         Sound.click();
         showScreen('screen-home');
     });
@@ -293,7 +295,6 @@
         // 점수 저장
         saveScore(currentOperation, currentLevel, correct, 20);
 
-        Sound.stopBGM();
         Sound.fanfare();
         showScreen('screen-result');
     }
@@ -341,18 +342,30 @@
         showScreen('screen-home');
     });
 
-    // 음소거 버튼
+    // 효과음/BGM 버튼
     var btnMute = document.getElementById('btn-mute');
     btnMute.addEventListener('click', function() {
         var isMuted = Sound.toggleMute();
         this.textContent = isMuted ? '🔇' : '🔊';
-        this.title = isMuted ? '소리 켜기' : '소리 끄기';
+        this.title = isMuted ? '효과음 켜기' : '효과음 끄기';
+        this.classList.toggle('off', isMuted);
     });
-
-    // 음소거 버튼 초기 상태 설정 (localStorage에서 복원)
     var initialMuted = Sound.isMuted();
     btnMute.textContent = initialMuted ? '🔇' : '🔊';
-    btnMute.title = initialMuted ? '소리 켜기' : '소리 끄기';
+    btnMute.title = initialMuted ? '효과음 켜기' : '효과음 끄기';
+    btnMute.classList.toggle('off', initialMuted);
+
+    // TTS 음성 버튼
+    var btnTts = document.getElementById('btn-tts');
+    btnTts.addEventListener('click', function() {
+        var isMuted = Sound.toggleTtsMute();
+        this.textContent = isMuted ? '🗣️' : '🗣️';
+        this.title = isMuted ? '음성 켜기' : '음성 끄기';
+        this.classList.toggle('off', isMuted);
+    });
+    var initialTtsMuted = Sound.isTtsMuted();
+    btnTts.title = initialTtsMuted ? '음성 켜기' : '음성 끄기';
+    btnTts.classList.toggle('off', initialTtsMuted);
 
     // 초기 화면
     showScreen('screen-home');

@@ -314,10 +314,16 @@ h2 {
 }
 
 /* 음소거 버튼 */
-.btn-mute {
+.sound-controls {
     position: fixed;
     top: 16px;
     right: 16px;
+    display: flex;
+    gap: 8px;
+    z-index: 100;
+}
+
+.btn-sound {
     width: 44px;
     height: 44px;
     font-size: 1.4rem;
@@ -325,7 +331,6 @@ h2 {
     border: 2px solid #ddd;
     border-radius: 50%;
     cursor: pointer;
-    z-index: 100;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -334,8 +339,12 @@ h2 {
     padding: 0;
 }
 
-.btn-mute:active {
+.btn-sound:active {
     transform: scale(0.9);
+}
+
+.btn-sound.off {
+    opacity: 0.4;
 }
 
 /* 광고 컨테이너 */

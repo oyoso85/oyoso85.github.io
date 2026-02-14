@@ -29,6 +29,7 @@ function saveScore(operation, level, score, total) {
 
 // 사운드 설정 저장
 var SOUND_SETTING_KEY = 'numberblock_soundEnabled';
+var TTS_SETTING_KEY = 'numberblock_ttsEnabled';
 
 function saveSoundSetting(enabled) {
     try {
@@ -41,9 +42,27 @@ function saveSoundSetting(enabled) {
 function getSoundSetting() {
     try {
         var data = localStorage.getItem(SOUND_SETTING_KEY);
-        return data !== null ? JSON.parse(data) : true; // 기본값: 소리 켜짐
+        return data !== null ? JSON.parse(data) : true;
     } catch (e) {
         console.warn('localStorage 읽기 실패:', e);
-        return true; // 기본값: 소리 켜짐
+        return true;
+    }
+}
+
+function saveTtsSetting(enabled) {
+    try {
+        localStorage.setItem(TTS_SETTING_KEY, JSON.stringify(enabled));
+    } catch (e) {
+        console.warn('localStorage 저장 실패:', e);
+    }
+}
+
+function getTtsSetting() {
+    try {
+        var data = localStorage.getItem(TTS_SETTING_KEY);
+        return data !== null ? JSON.parse(data) : true;
+    } catch (e) {
+        console.warn('localStorage 읽기 실패:', e);
+        return true;
     }
 }

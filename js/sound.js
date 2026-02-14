@@ -2,6 +2,7 @@
 var Sound = (function() {
     var ctx = null;
     var muted = false;
+    var ttsMuted = false;
     var bgmInterval = null;
     var bgmGain = null;
     var masterGain = null;
@@ -9,8 +10,10 @@ var Sound = (function() {
     // localStorage에서 초기 설정 읽기
     function initSettings() {
         if (typeof getSoundSetting === 'function') {
-            var savedEnabled = getSoundSetting();
-            muted = !savedEnabled; // localStorage는 enabled 상태, muted는 반대
+            muted = !getSoundSetting();
+        }
+        if (typeof getTtsSetting === 'function') {
+            ttsMuted = !getTtsSetting();
         }
     }
     initSettings();
@@ -236,6 +239,22 @@ var Sound = (function() {
         return muted;
     }
 
+    // TTS 음소거 토글
+    function toggleTtsMute() {
+        ttsMuted = !ttsMuted;
+        if (ttsMuted && typeof speechSynthesis !== 'undefined') {
+            speechSynthesis.cancel();
+        }
+        if (typeof saveTtsSetting === 'function') {
+            saveTtsSetting(!ttsMuted);
+        }
+        return ttsMuted;
+    }
+
+    function isTtsMuted() {
+        return ttsMuted;
+    }
+
     // AudioContext 활성화 (사용자 인터랙션 필요)
     function unlock() {
         var c = getCtx();
@@ -253,6 +272,8 @@ var Sound = (function() {
         stopBGM: stopBGM,
         toggleMute: toggleMute,
         isMuted: isMuted,
+        toggleTtsMute: toggleTtsMute,
+        isTtsMuted: isTtsMuted,
         unlock: unlock
     };
 })();
